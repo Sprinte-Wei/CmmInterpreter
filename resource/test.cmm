@@ -1,0 +1,48 @@
+//词法分析的基本错误类型：
+//1、非法符号 ￥ #
+//2、不正确的标识符
+/*3、读取字符时候有两个字符
+4、读取字符串分*//*号未闭合
+5、数字形式不合法
+6、多行注释未闭合或嵌套*/
+int main(){
+	int i = 0;
+	bool b = true;
+	double d = 1.1;
+	char c = 'c';
+	if(2 >= 1){
+		write(d);
+	}
+	else if(false){
+		write("false");
+	}
+	else{
+		read();
+	}
+	while(i < 100){
+		write(i);
+		i++;
+	}
+	for(int j = 100; j != 0; j--){
+		write(j+10);
+	}
+	switch(i){
+		case 100:
+		case 99:
+			write(99);
+			break;
+		default:
+			break;
+	}
+	write(test(88));
+	test2(true);
+	return 0;
+}
+
+int test(int i){
+	write(i);
+	return i;
+}
+void test2(boolean b){
+	write(b);
+}
