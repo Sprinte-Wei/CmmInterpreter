@@ -1,3 +1,3 @@
-# Calculator
-A calculator by JavaFx.   
+# CmmInterpreter
+A CmmInterpreter by JAVA.   
 Created by WCG, DYH, ZX.
