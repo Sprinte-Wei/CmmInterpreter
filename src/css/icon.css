@@ -1,0 +1,86 @@
+#itemNew > .label {
+    -fx-graphic: url("../image/new.png");
+}
+#itemNew > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemOpen > .label {
+    -fx-graphic: url("../image/open.png");
+}
+#itemOpen > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemSave > .label {
+    -fx-graphic: url("../image/save.png");
+}
+#itemSave > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemExit > .label {
+    -fx-graphic: url("../image/exit.png");
+}
+#itemExit > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemAllSelect > .label {
+    -fx-graphic: url("../image/all.png");
+}
+#itemAllSelect > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemCopy > .label {
+    -fx-graphic: url("../image/copy.png");
+}
+#itemCopy > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemPaste > .label {
+    -fx-graphic: url("../image/paste.png");
+}
+#itemPaste > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemLexer > .label {
+    -fx-graphic: url("../image/lex.png");
+}
+#itemLexer > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemParser > .label {
+    -fx-graphic: url("../image/parse.png");
+}
+#itemParser > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemRun > .label {
+    -fx-graphic: url("../image/run.png");
+}
+#itemRun > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemFont > .label {
+    -fx-graphic: url("../image/font.png");
+}
+#itemFont > .accelerator-text{
+    -fx-graphic: none;
+}
+
+#itemAbout > .label {
+    -fx-graphic: url("../image/about.png");
+}
+#itemAbout > .accelerator-text{
+    -fx-graphic: none;
+}
+
+
+

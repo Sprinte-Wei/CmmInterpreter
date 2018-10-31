@@ -6,8 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.lexer.Lexer;
-import sample.lexer.Token;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,22 +16,22 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("CmmInterpreter");
+        primaryStage.setScene(new Scene(root, 1200, 900));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
 
     public static void main(String[] args) {
-        //launch(args);
-        //Scanner scanner = new Scanner(System.in);
+        launch(args);
 
-        Lexer l = new Lexer(getLinesFromResource());
+        /*Lexer l = new Lexer(getLinesFromResource());
         List<Token> tokens = l.getTokens();
         for(Token token : tokens){
             System.out.println(token);
         }
-        System.out.println();
+        System.out.println();*/
     }
 
     private static List<String> getLinesFromResource(){
