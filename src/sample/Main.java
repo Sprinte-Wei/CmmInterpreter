@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.lexer.Lexer;
+import sample.lexer.Token;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,20 +26,20 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
 
-        /*Lexer l = new Lexer(getLinesFromResource());
+        Lexer l = new Lexer(getLinesFromResource());
         List<Token> tokens = l.getTokens();
         for(Token token : tokens){
             System.out.println(token);
         }
-        System.out.println();*/
+        System.exit(0);
     }
 
     private static List<String> getLinesFromResource(){
         List<String> lines = new ArrayList<>();
         StringBuilder s = new StringBuilder();
-        File file = new File(Main.class.getResource("/test.cmm").getPath());
+        File file = new File(Main.class.getResource("/11.txt").getPath());
         BufferedReader reader = null;
         try {
             FileInputStream in = new FileInputStream(file);

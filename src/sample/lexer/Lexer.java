@@ -35,10 +35,14 @@ public class Lexer {
             currentLine = i + 1;
             line = lines.get(i);
             try{
-                while (currentCharPosition != line.length()){
+                do{
                     //如果想一行报多个错，可以将try写到while里面，但是这样存在歧义
                     nextToken();
-                }
+                }while (currentCharPosition < line.length());
+                /*while (currentCharPosition != line.length()){
+                    //如果想一行报多个错，可以将try写到while里面，但是这样存在歧义
+                    nextToken();
+                }*/
             }
             catch (LexicalException e){
                 System.out.println(e.getMessage());
@@ -50,6 +54,9 @@ public class Lexer {
     private void nextToken() throws LexicalException {
         if(isInMultipleLineNotation){
             readMultipleLineNotation();
+            return;
+        }
+        if(currentCharPosition >= line.length()){
             return;
         }
         char currentChar = line.charAt(currentCharPosition++);
@@ -96,7 +103,8 @@ public class Lexer {
         }
         else if(currentChar == '!'){
             if(currentCharPosition == line.length() || line.charAt(currentCharPosition) != '='){
-                throw new LexicalException(currentLine, currentCharPosition);
+                tokens.add(new Token(TokenType.LOGICAL_NOT,
+                        "!", currentLine, currentCharPosition-1));
             }
             else{
                 tokens.add(new Token(TokenType.NOT_EQUAL,
@@ -128,7 +136,14 @@ public class Lexer {
             }
         }
         else if(currentChar == '-'){
-            if(currentCharPosition == line.length()){
+            if(currentCharPosition != line.length() && line.charAt(currentCharPosition) == '-'){
+                tokens.add((new Token(TokenType.AUTO_DECREMENT, "--", currentLine, currentCharPosition-1)));
+                currentCharPosition++;
+            }
+            else{
+                tokens.add(new Token(TokenType.MINUS, "-", currentLine, currentCharPosition-1));
+            }
+            /*if(currentCharPosition == line.length()){
                 tokens.add(new Token(TokenType.MINUS, "-", currentLine, currentCharPosition-1));
             }
             else if(line.charAt(currentCharPosition) == '-'){
@@ -140,14 +155,14 @@ public class Lexer {
             }
             else{
                 tokens.add(new Token(TokenType.MINUS, "-", currentLine, currentCharPosition-1));
-            }
+            }*/
         }
         else if(isLetter(currentChar)){
             tokens.add(readIdentifier());
         }
         else if(currentChar == '\''){
             if(currentCharPosition + 1 >= line.length() || line.charAt(currentCharPosition+1) != '\''){
-                throw new LexicalException(currentLine, currentCharPosition);
+                throw new LexicalException(currentLine, currentCharPosition, "Beyond one character in the type of char.");
             }
             tokens.add(new Token(TokenType.CHARACTER,
                     String.valueOf(line.charAt(currentCharPosition)), currentLine, currentCharPosition-1));
@@ -160,7 +175,7 @@ public class Lexer {
             tokens.add(readNumber());
         }
         else{
-            throw new LexicalException(currentLine, currentCharPosition);
+            throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
         }
 
     }
@@ -184,7 +199,7 @@ public class Lexer {
                     }
                     return new Token(TokenType.IDENTIFIER, s.toString(), currentLine, begin);
                 }
-                throw new LexicalException(currentLine, currentCharPosition);
+                throw new LexicalException(currentLine, currentCharPosition, "Illeagal identifier.");
             }
             if(!isLegalCharInIdentifier(line.charAt(currentCharPosition)) && isLegalIdentifier(s.toString())){
                 if(isKeySymbol(s.toString())){
@@ -194,7 +209,7 @@ public class Lexer {
                 return new Token(TokenType.IDENTIFIER, s.toString(), currentLine, begin);
             }
             else if(!isLegalCharInIdentifier(line.charAt(currentCharPosition))){
-                throw new LexicalException(currentLine, currentCharPosition);
+                throw new LexicalException(currentLine, currentCharPosition, "Illeagal identifier.");
             }
             else{
                 s.append(line.charAt(currentCharPosition++));
@@ -213,11 +228,11 @@ public class Lexer {
         StringBuilder s = new StringBuilder();
         while (true){
             if(currentCharPosition == line.length()){
-                throw new LexicalException(currentLine, currentCharPosition);
+                throw new LexicalException(currentLine, currentCharPosition, "Quotes are not closed.");
             }
             else if(line.charAt(currentCharPosition) == '\"'){
                 currentCharPosition++;
-                return new Token(TokenType.STRING, s.toString(), currentLine, begin);
+                return new Token(TokenType.CONSTANT_STRING, s.toString(), currentLine, begin);
             }
             else{
                 s.append(line.charAt(currentCharPosition++));
@@ -256,7 +271,7 @@ public class Lexer {
         while (isInMultipleLineNotation){
             if(currentCharPosition <= line.length() - 2){
                 if(line.charAt(currentCharPosition) == '/' && line.charAt(currentCharPosition+1) == '*'){
-                    throw new LexicalException(currentLine, currentCharPosition+1);
+                    throw new LexicalException(currentLine, currentCharPosition+1, "The multiple line notation cannot contain \"/*\".");
                 }
                 else if(line.charAt(currentCharPosition) == '*' && line.charAt(currentCharPosition+1) == '/'){
                     tokens.add(new Token(TokenType.MULTIPLE_LINE_NOTATION, stringBuilder.toString(), multipleNotationStartLine, multipleNotationsStart));
@@ -275,7 +290,7 @@ public class Lexer {
                 }
                 stringBuilder.append('\n');
                 if(currentLine == lines.size()){
-                    throw new LexicalException(currentLine, currentCharPosition+1);
+                    throw new LexicalException(currentLine, currentCharPosition+1, "The multiple line notation is not closed.");
                 }
                 break;
             }
@@ -300,10 +315,10 @@ public class Lexer {
                 return new Token(TokenType.NUMBER_INT, s.toString(), currentLine, begin);
             }
             else if(currentCharPosition == line.length() || isLegalCharFollowNumber(line.charAt(currentCharPosition))){
-                throw new LexicalException(currentLine, currentCharPosition);
+                throw new LexicalException(currentLine, currentCharPosition, "Illeagal number.");
             }
             else if(!isRightStepOfNum(s.toString()) && !isLegalNum(s.toString())){
-                throw new LexicalException(currentLine, currentCharPosition);
+                throw new LexicalException(currentLine, currentCharPosition, "Illeagal number.");
             }
             else {
                 s.append(line.charAt(currentCharPosition++));
@@ -358,7 +373,8 @@ public class Lexer {
                 || str.equals("default") || str.equals("int")
                 || str.equals("double") || str.equals("char")
                 || str.equals("bool") || str.equals("void")
-                || str.equals("false") || str.equals("true"));
+                || str.equals("false") || str.equals("true")
+                || str.equals("string"));
     }
 
     /**
@@ -369,7 +385,7 @@ public class Lexer {
      * @return boolean
      */
     private boolean canGenerateToken(char c){
-        return(c == ',' || c == ';' || c == '(' || c == ')' || c == '{' || c == '}' || c == '*' || c == ':' || c == '[' || c == ']');
+        return(c == ',' || c == ';' || c == '(' || c == ')' || c == '{' || c == '}' || c == '*' || c == ':' || c == '[' || c == ']' || c == '%');
     }
 
     /**
@@ -380,7 +396,7 @@ public class Lexer {
      * @return boolean
      */
     private boolean doubleValid(char c){
-        return(c == '+' || c == '=');
+        return(c == '+' || c == '=' || c == '&' || c == '|');
     }
 
     private boolean isLetter(char c){
@@ -392,7 +408,8 @@ public class Lexer {
     }
 
     private boolean isLegalCharFollowNumber(char c){
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == ',' || c == ';' || c == ')' || c == ':' || c =='=' || c == '!' || c == ']' ||
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == ',' || c == ';' || c == ')' || c == ':' || c =='=' || c == '!' || c == ']' || c == '%' ||
+                c == '>' || c == '<' || c == '&' || c == '|' || c == '}' ||
                 isBlankChar(c);
     }
 

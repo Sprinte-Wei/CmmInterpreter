@@ -41,6 +41,8 @@ public class TokenHelper {
                 return TokenType.BREAK;
             case "return":
                 return TokenType.RETURN;
+            case "string":
+                return TokenType.STRING;
             default:
                 return null;
         }
@@ -68,6 +70,8 @@ public class TokenHelper {
                 return TokenType.LEFT_BRACKET;
             case ']':
                 return TokenType.RIGHT_BRACKET;
+            case '%':
+                return TokenType.MODULO;
             default:
                 return null;
         }
@@ -79,6 +83,10 @@ public class TokenHelper {
                 return isSingle ? TokenType.PLUS : TokenType.AUTO_INCREMENT;
             case '=':
                 return isSingle ? TokenType.ASSIGN : TokenType.EQUAL;
+            case '&':
+                return isSingle ? TokenType.BIT_AND : TokenType.LOGICAL_AND;
+            case '|':
+                return isSingle ? TokenType.BIT_OR : TokenType.LOGICAL_OR;
             default:
                 return null;
         }
