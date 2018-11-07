@@ -1,66 +1,26 @@
-//词法分析的基本错误类型：
-//1、非法符号 ￥ #
-//2、不正确的标识符
-/*3、读取字符时候有两个字符
-4、读取字符串引*//*号未闭合
-5、数字形式不合法
-6、多行注释未闭合或嵌套*/
+//未知符号
+int a =你好;
 
-//int  _a;
-//int a_;
-//int 1a;
-//int a#;
+//字符超长
+char c = 'abc';
 
-//char c = 'ab';
+//多个小数点
+double a = 2.2.2;
 
-//char c = 'a;
-//string s = "ab;
+//多个单双引号
+char c = 'a'a';
 
-//int  i = .1;
-//int i = 1.;
-//int i = 1.1.1;
+//数字后面接字符
+23asdf;
 
-///*int a = 0;
+//多个引号嵌套
 
-int main(){
-	int i = 0;
-	bool b = true;
-	double d = 1.1;
-	char c = 'c';
-	if(2 >= 1){
-		write(d);
-	}
-	else if(false){
-		write("false");
-	}
-	else{
-		read();
-	}
-	while(i < 100){
-		write(i);
-		i++;
-	}
-	for(int j = 100; j != 0; j--){
-		write(j+10);
-	}
-	switch(i){
-		case 100:
-		case 99:
-			write(99);
-			break;
-		default:
-			break;
-	}
-	write(test(88));
-	test2(true);
-	return 0;
-}
+"""
 
-int test(int i){
-	write(i);
-	return i;
-}
-void test2(boolean b){
-	write(b);
-}
+//连续负号识别成负号还是减号
+--
 
+//多行注释有头无尾
+/*52452
+adfsda
+endb
