@@ -63,3 +63,4 @@ int test(int i){
 void test2(boolean b){
 	write(b);
 }
+
