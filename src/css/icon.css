@@ -82,5 +82,66 @@
     -fx-graphic: none;
 }
 
+#btn_new{
+    -fx-background-image: url("../image/new.png");
+}
 
+#btn_open{
+    -fx-background-image: url("../image/open.png");
+}
 
+#btn_save{
+    -fx-background-image: url("../image/save.png");
+}
+
+#btn_lex{
+    -fx-background-image: url("../image/lex.png");
+}
+
+#btn_parse{
+    -fx-background-image: url("../image/parse.png");
+}
+
+#btn_run{
+    -fx-background-image: url("../image/run.png");
+}
+
+#btn_save{
+    -fx-background-image: url("../image/save.png");
+}
+
+#btn_undo{
+    -fx-background-image: url("../image/undo.png");
+}
+
+#btn_redo{
+    -fx-background-image: url("../image/redo.png");
+}
+
+#btn_copy{
+    -fx-background-image: url("../image/copy.png");
+}
+
+#btn_cut{
+    -fx-background-image: url("../image/cut.png");
+}
+
+#btn_paste{
+    -fx-background-image: url("../image/paste.png");
+}
+
+#btn_search{
+    -fx-background-image: url("../image/search.png");
+}
+
+#btn_setfont{
+    -fx-background-image: url("../image/font.png");
+}
+
+#btn_help{
+    -fx-background-image: url("../image/help.png");
+}
+
+#btn_about{
+    -fx-background-image: url("../image/about.png");
+}
