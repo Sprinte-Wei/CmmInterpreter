@@ -329,10 +329,10 @@ public class Lexer {
     private void readMultipleLineNotation() throws LexicalException{
         while (isInMultipleLineNotation){
             if(currentCharPosition <= line.length() - 2){
-                if(line.charAt(currentCharPosition) == '/' && line.charAt(currentCharPosition+1) == '*'){
+                /*if(line.charAt(currentCharPosition) == '/' && line.charAt(currentCharPosition+1) == '*'){
                     throw new LexicalException(currentLine, currentCharPosition+1, "The multiple line notation cannot contain \"/*\".");
                 }
-                else if(line.charAt(currentCharPosition) == '*' && line.charAt(currentCharPosition+1) == '/'){
+                else */if(line.charAt(currentCharPosition) == '*' && line.charAt(currentCharPosition+1) == '/'){
                     tokens.add(new Token(TokenType.MULTIPLE_LINE_NOTATION, stringBuilder.toString(), multipleNotationStartLine, multipleNotationsStart));
                     stringBuilder.setLength(0);
                     isInMultipleLineNotation = false;
