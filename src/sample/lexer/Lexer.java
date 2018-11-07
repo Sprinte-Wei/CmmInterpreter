@@ -162,7 +162,7 @@ public class Lexer {
         }
         else if(currentChar == '\''){
             if(currentCharPosition + 1 >= line.length() || line.charAt(currentCharPosition+1) != '\''){
-                throw new LexicalException(currentLine, currentCharPosition, "Beyond one character in the type of char.");
+                throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
             }
             tokens.add(new Token(TokenType.CHARACTER,
                     String.valueOf(line.charAt(currentCharPosition)), currentLine, currentCharPosition-1));
@@ -175,7 +175,7 @@ public class Lexer {
             tokens.add(readNumber());
         }
         else{
-            throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
+            throw new LexicalException(currentLine, currentCharPosition, "Illegal identifier.");
         }
 
     }
@@ -315,10 +315,10 @@ public class Lexer {
                 return new Token(TokenType.NUMBER_INT, s.toString(), currentLine, begin);
             }
             else if(currentCharPosition == line.length() || isLegalCharFollowNumber(line.charAt(currentCharPosition))){
-                throw new LexicalException(currentLine, currentCharPosition, "Illeagal number.");
+                throw new LexicalException(currentLine, currentCharPosition, "Illeagal number or illegal identifier.");
             }
             else if(!isRightStepOfNum(s.toString()) && !isLegalNum(s.toString())){
-                throw new LexicalException(currentLine, currentCharPosition, "Illeagal number.");
+                throw new LexicalException(currentLine, currentCharPosition, "Illeagal number or illegal identifier.");
             }
             else {
                 s.append(line.charAt(currentCharPosition++));
