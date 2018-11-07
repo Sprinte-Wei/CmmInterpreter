@@ -1,6 +1,5 @@
 package sample.lexer;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,12 +160,52 @@ public class Lexer {
             tokens.add(readIdentifier());
         }
         else if(currentChar == '\''){
-            if(currentCharPosition + 1 >= line.length() || line.charAt(currentCharPosition+1) != '\''){
+            if(currentCharPosition + 1 >= line.length()){
                 throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
             }
-            tokens.add(new Token(TokenType.CHARACTER,
-                    String.valueOf(line.charAt(currentCharPosition)), currentLine, currentCharPosition-1));
-            currentCharPosition = currentCharPosition + 2;
+            else if(line.charAt(currentCharPosition+1) != '\'')
+            {
+                if(line.charAt(currentCharPosition+2) == '\'')
+                {
+                    String str = solveString(line.substring(currentCharPosition,currentCharPosition+2));
+                    if(str.length() == 1)
+                    {
+                        tokens.add(new Token(TokenType.CHARACTER,
+                                str, currentLine, currentCharPosition-1));
+                        currentCharPosition+=3;
+                    }
+                    else
+                    {
+                        throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
+                    }
+                }
+                else
+                {
+                    throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
+                }
+            }
+            else if(line.charAt(currentCharPosition) == '\\')
+            {
+                if (currentCharPosition+2 >= line.length())
+                {
+                    throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
+                }
+                else if(line.charAt(currentCharPosition+2) == '\'')
+                {
+                    tokens.add(new Token(TokenType.CHARACTER,
+                            "\'", currentLine, currentCharPosition-1));
+                    currentCharPosition+=3;
+                }
+                else
+                {
+                    throw new LexicalException(currentLine, currentCharPosition, "Illegal character.");
+                }
+            }
+            else {
+                tokens.add(new Token(TokenType.CHARACTER,
+                        String.valueOf(line.charAt(currentCharPosition)), currentLine, currentCharPosition - 1));
+                currentCharPosition = currentCharPosition + 2;
+            }
         }
         else if(currentChar == '\"'){
             tokens.add(readString());
@@ -232,12 +271,32 @@ public class Lexer {
             }
             else if(line.charAt(currentCharPosition) == '\"'){
                 currentCharPosition++;
-                return new Token(TokenType.CONSTANT_STRING, s.toString(), currentLine, begin);
+                int n = 2;
+                while (line.charAt(currentCharPosition-n) == '\\')
+                {
+                    n++;
+                }
+
+                if(n%2 == 1) {
+                    s.append(line.charAt(currentCharPosition-1));
+                    continue;
+                }
+                return new Token(TokenType.CONSTANT_STRING, solveString(s.toString()), currentLine, begin);
             }
             else{
                 s.append(line.charAt(currentCharPosition++));
             }
         }
+    }
+
+    private String solveString(String s)
+    {
+        String str = s.replace("\\\"", "\"");
+        str = str.replace("\\'","\'");
+        str = str.replace("\\n","\n");
+        str = str.replace("\\t","\t");
+        str = str.replace("\\\\","\\");
+        return str;
     }
 
     /**
