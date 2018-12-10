@@ -165,7 +165,7 @@ public class Lexer {
             }
             else if(line.charAt(currentCharPosition+1) != '\'')
             {
-                if(currentCharPosition+2 < line.length() && line.charAt(currentCharPosition+2) == '\'')
+                if(line.charAt(currentCharPosition+2) == '\'')
                 {
                     String str = solveString(line.substring(currentCharPosition,currentCharPosition+2));
                     if(str.length() == 1)
