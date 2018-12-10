@@ -8,6 +8,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.lexer.Lexer;
 import sample.lexer.Token;
+import sample.lexer.TokenType;
+import sample.parser.Parser;
+import sample.parser.SyntaxException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,9 +33,37 @@ public class Main extends Application {
 
         Lexer l = new Lexer(getLinesFromResource());
         List<Token> tokens = l.getTokens();
-        for(Token token : tokens){
-            System.out.println(token);
+        for(int i = 0; i < tokens.size(); i++){
+            Token token = tokens.get(i);
+            if(token.getType().equals(TokenType.SINGLE_LINE_NOTATION)||token.getType().equals(TokenType.MULTIPLE_LINE_NOTATION))
+            {
+                tokens.remove(token);
+                i--;
+            }
+
+            //System.out.println(token);
         }
+        Parser parser = new Parser();
+        /*List<Token> tokens_ = new ArrayList<>();
+        Token token1 = new Token(TokenType.LEFT_PARENTHESIS,"(",0,0);
+        Token token2 = new Token(TokenType.NUMBER_INT,"1",0,1);
+        Token token3 = new Token(TokenType.PLUS,"+",0,2);
+        Token token4 = new Token(TokenType.NUMBER_INT,"1",0,3);
+        Token token5 = new Token(TokenType.RIGHT_PARENTHESIS,")",0,4);
+        Token token6 = new Token(TokenType.PLUS,"+",0,5);
+        Token token7 = new Token(TokenType.NUMBER_INT,"1",0,6);
+        tokens_.add(token1);
+        tokens_.add(token2);
+        tokens_.add(token3);
+        tokens_.add(token4);
+        tokens_.add(token5);
+        tokens_.add(token6);
+        tokens_.add(token7);测试*/
+        /*try {
+            parser.readTokens(tokens);
+        } catch (SyntaxException e) {
+            e.printStackTrace();
+        }*/
         System.exit(0);
     }
 
