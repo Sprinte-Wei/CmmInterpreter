@@ -64,6 +64,7 @@ public class Main extends Application {
         } catch (SyntaxException e) {
             e.printStackTrace();
         }
+        parser.printTree();
         System.exit(0);
     }
 

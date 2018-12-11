@@ -3,6 +3,7 @@ package sample.parser;
 import sample.Main;
 import sample.lexer.Token;
 import sample.lexer.TokenType;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.*;
 import java.util.*;
@@ -14,6 +15,7 @@ public class Parser {
     private ArrayList<Production> productions = new ArrayList<>();//产生式
     private ArrayList<ArrayList<State>> sTable = new ArrayList<>();//状态表
     private ArrayList<SpecificState> states = new ArrayList<>();//具体的状态
+    public ArrayList<TreeNode> tree = new ArrayList<>();//语法树
 
     public Parser()
     {
@@ -219,7 +221,7 @@ public class Parser {
 
     private void printAll()
     {
-        for(int i = 0; i < sTable.size(); i++)
+        /*for(int i = 0; i < sTable.size(); i++)
         {
             ArrayList<State> s = sTable.get(i);
             System.out.print(i);
@@ -230,14 +232,27 @@ public class Parser {
                 System.out.print(" ");
             }
             System.out.println();
+        }*/
+        for(int i = 0; i < sTable.size(); i++)
+        {
+            ArrayList<State> s = sTable.get(i);
+            for(int j = 0; j < ends.size(); j++)
+            {
+                State state = s.get(j);
+                if(state.isR()==false && state.getState()!=-1)
+                {
+                    state.errors.add(ends.get(j));
+                }
+            }
         }
+
     }
 
     public void readTokens(List<Token> tokens)throws SyntaxException
     {
         //建立token状态栈
-        Stack<String> stringStack = new Stack<>();
-        stringStack.push("0");
+        Stack<TreeNode> stringStack = new Stack<>();
+        stringStack.push(new TreeNode(-1,"0"));
 
         //建立token队列
         Queue<Token> tokenQueue = new LinkedList<>();
@@ -252,7 +267,7 @@ public class Parser {
         while (tokenQueue.peek() != null)
         {
             //获得状态，即表的行数
-            int state = Integer.parseInt(stringStack.peek());
+            int state = Integer.parseInt(stringStack.peek().content);
 
             //获得符号，即表的列数
             int symbol;
@@ -269,25 +284,58 @@ public class Parser {
 
             //通过表内容来进行处理
             State nextState = sTable.get(state).get(symbol);
-            if(nextState.getState() == -1) throw new SyntaxException(tokenQueue.peek().getLine(),tokenQueue.peek().getLocation(), tokenQueue.peek().getValue());//输入形式错误
-            else if(nextState.getState() == 0) return;
+            if(nextState.getState() == -1)
+            {
+                String string;
+                if(nextState.errors.size() == 0 || nextState.errors.size() > 10) string = "unexpected " + tokenQueue.peek().getType().toString();
+                else string = nextState.getError();
+                throw new SyntaxException(tokenQueue.peek().getLine(),tokenQueue.peek().getLocation(), string);//输入形式错误
+            }
+            else if(nextState.getState() == 0)
+            {
+                TreeNode treeNode = new TreeNode(-1,"START");
+                tree.add(treeNode);
+                return;
+            }
             else if(nextState.isR())//规约状态
             {
                 for(int i = 0; i < (productions.get(nextState.getState()).tokens.size()-1) * 2; i++)
                 {
-                    stringStack.pop();//归约弹出应该的符号和状态
+                    TreeNode treeNode = stringStack.pop();//归约弹出应该的符号和状态
+                    if(i%2 == 1)
+                    {
+                        tree.get(treeNode.parent-1).parent = tree.size();
+                    }
                 }
                 Vn = ends.size() + notends.indexOf(productions.get(nextState.getState()).tokens.get(0));
             }
             else//移入状态
             {
-                if(Vn > 0) stringStack.push(Integer.toString(Vn));
-                else stringStack.push(tokenQueue.poll().getValue());
-                if(tokenQueue.size() == 40)
-                    Vn = 1;
-                stringStack.push(Integer.toString(nextState.getState()));
+                if(Vn > 0)
+                {
+                    TreeNode treeNode = new TreeNode(tree.size()+1, notends.get(Vn-54));
+                    stringStack.push(treeNode);
+                    tree.add(treeNode);
+                }
+                else
+                {
+                    TreeNode treeNode = new TreeNode(tree.size()+1, tokenQueue.poll().getValue());
+                    stringStack.push(treeNode);
+                    tree.add(treeNode);
+                }
+                TreeNode treeNode = new TreeNode(-1, Integer.toString(nextState.getState()));
+                stringStack.push(treeNode);
                 Vn = -1;
             }
+        }
+    }
+
+    public void printTree()
+    {
+        for(int i = 0; i < tree.size(); i++)
+        {
+            System.out.print(tree.get(i).parent);
+            System.out.println(tree.get(i).content);
         }
     }
 }

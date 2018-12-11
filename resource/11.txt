@@ -22,7 +22,7 @@
 ///*int a = 0;
 
 int main(){
-    a(1);
+    a (1);
 	int i = 0;
 	bool b = true;
 	double d = 1.1;
@@ -45,14 +45,14 @@ int main(){
 	}
 	write(test(88));
 	test2(true);
-	return 0;
+	//return 0;
 }
 
 int test(int i){
 	write(i);
-	return i;
+	//return i;
 }
-void test2(boolean b){
+void test2(bool b){
 	write(b);
 }
 
