@@ -19,7 +19,7 @@ public class Parser {
     {
         getLinesFromResource();
         createSTable();
-        //printAll();
+        printAll();
     }
 
     private void createSTable()
@@ -111,10 +111,10 @@ public class Parser {
                 symbol = ends.size() + notends.indexOf(token);
             }
             State tempState = sTable.get(s.getPreState()).get(symbol);
-            if(!tempState.isR()) {//全部归约
-                //tempState.setR(false);
+            //if(!tempState.isR()) {//全部归约
+                tempState.setR(false);
                 tempState.setState(line);
-            }
+            //}
 
             if(unRepeat) nextState(s,sTable.size()-1);
         }
@@ -222,6 +222,7 @@ public class Parser {
         for(int i = 0; i < sTable.size(); i++)
         {
             ArrayList<State> s = sTable.get(i);
+            System.out.print(i);
             for(int j = 0; j < s.size(); j++)
             {
                 System.out.print(s.get(j).isR());
@@ -268,7 +269,7 @@ public class Parser {
 
             //通过表内容来进行处理
             State nextState = sTable.get(state).get(symbol);
-            if(nextState.getState() == -1) throw new SyntaxException(tokenQueue.peek().getLocation(), nextState.getError());//输入形式错误
+            if(nextState.getState() == -1) throw new SyntaxException(tokenQueue.peek().getLine(),tokenQueue.peek().getLocation(), tokenQueue.peek().getValue());//输入形式错误
             else if(nextState.getState() == 0) return;
             else if(nextState.isR())//规约状态
             {
@@ -282,6 +283,8 @@ public class Parser {
             {
                 if(Vn > 0) stringStack.push(Integer.toString(Vn));
                 else stringStack.push(tokenQueue.poll().getValue());
+                if(tokenQueue.size() == 40)
+                    Vn = 1;
                 stringStack.push(Integer.toString(nextState.getState()));
                 Vn = -1;
             }

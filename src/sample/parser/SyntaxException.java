@@ -3,8 +3,8 @@ package sample.parser;
 public class SyntaxException extends Exception{
     public int location;
 
-    public SyntaxException(int location, String s) {
-        super("Syntax Error At " + location + "!("+ s + ")");
+    public SyntaxException(int line, int location, String s) {
+        super("Syntax Error At line " + line + " location " + location + " !("+ s + ")");
         this.location = location;
     }
 

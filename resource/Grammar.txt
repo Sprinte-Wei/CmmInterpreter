@@ -1,12 +1,14 @@
 <程序>
 PLUS MINUS MULTIPLY DIVIDE AUTO_INCREMENT AUTO_DECREMENT MODULO GREATER_THAN LESS_THAN EQUAL NOT_EQUAL GREAT_THAN_OR_EQUAL LESS_THAN_OR_EQUAL LOGICAL_AND LOGICAL_OR LOGICAL_NOT BIT_AND BIT_OR ASSIGN READ WRITE WHILE FOR IF ELSE SWITCH CASE DEFAULT BREAK INT DOUBLE CHAR BOOL STRING VOID RETURN NUMBER_INT NUMBER_DOUBLE CHARACTER TRUE FALSE CONSTANT_STRING IDENTIFIER COMMA SEMICOLON LEFT_PARENTHESIS RIGHT_PARENTHESIS LEFT_BRACE RIGHT_BRACE COLON LEFT_BRACKET RIGHT_BRACKET SINGLE_LINE_NOTATION MULTIPLE_LINE_NOTATION
-<程序> <声明列表> <声明> <变量声明> <函数声明> <类型分类符> <整数> <参数列表> <复合声明> <参数> <变量> <局部声明> <表达式声明> <输入函数> <输出函数> <表达式> <逻辑表达式1> <逻辑表达式2> <简单表达式> <添加的表达式> <关系操作> <加法操作> <term> <乘法操作> <逻辑表达式3> <因子> <调用> <数字> <形式参数列表> <if语句声明> <while语句声明> <for语句声明> <break语句声明> <continue语句声明> <return语句声明>
+<程序> <声明列表> <声明> <变量声明> <函数声明> <类型分类符> <整数> <参数列表> <复合声明> <参数> <变量> <表达式声明> <输入函数> <输出函数> <表达式> <逻辑表达式1> <逻辑表达式2> <简单表达式> <添加的表达式> <关系操作> <加法操作> <term> <乘法操作> <逻辑表达式3> <因子> <调用> <数字> <形式参数列表> <if语句声明> <while语句声明> <for语句声明> <break语句声明> <continue语句声明> <return语句声明>
 <程序> <声明列表>
 <声明列表> <声明列表> <声明>
 <声明列表> <声明>
 <声明> <变量声明>
 <声明> <函数声明>
+<声明> <表达式声明>
 <变量声明> <类型分类符> IDENTIFIER SEMICOLON
+<变量声明> <类型分类符> IDENTIFIER ASSIGN <表达式> SEMICOLON
 <变量声明> <类型分类符> IDENTIFIER LEFT_BRACKET <整数> RIGHT_BRACKET SEMICOLON
 <整数> NUMBER_INT
 <类型分类符> INT
@@ -15,17 +17,16 @@ PLUS MINUS MULTIPLY DIVIDE AUTO_INCREMENT AUTO_DECREMENT MODULO GREATER_THAN LES
 <类型分类符> STRING
 <类型分类符> BOOL
 <函数声明> <类型分类符> IDENTIFIER LEFT_PARENTHESIS <参数列表> RIGHT_PARENTHESIS <复合声明> SEMICOLON
+<函数声明> <类型分类符> IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS <复合声明> SEMICOLON
 <参数列表> <参数列表> COMMA <参数>
 <参数列表> <参数>
 <参数> <类型分类符> <变量>
 <参数> <类型分类符> <变量> LEFT_BRACKET RIGHT_BRACKET
-<复合声明> LEFT_BRACE <局部声明> <声明列表> RIGHT_BRACE
+<复合声明> LEFT_BRACE <声明列表> RIGHT_BRACE
 <复合声明> <表达式声明>
-<局部声明> <局部声明> <变量声明>
-<局部声明> <变量声明>
 <表达式声明> <输入函数>
 <表达式声明> <输出函数>
-<输入函数> READ LEFT_PARENTHESIS <变量> RIGHT_PARENTHESIS SEMICOLON
+<输入函数> READ LEFT_PARENTHESIS RIGHT_PARENTHESIS SEMICOLON
 <输出函数> WRITE LEFT_PARENTHESIS <表达式> RIGHT_PARENTHESIS SEMICOLON
 <表达式声明> <表达式> SEMICOLON
 <表达式声明> SEMICOLON
@@ -55,8 +56,10 @@ PLUS MINUS MULTIPLY DIVIDE AUTO_INCREMENT AUTO_DECREMENT MODULO GREATER_THAN LES
 <乘法操作> MODULO
 <逻辑表达式3> LOGICAL_NOT <逻辑表达式3>
 <逻辑表达式3> <因子>
-<因子> AUTO_INCREMENT
-<因子> AUTO_DECREMENT
+<因子> <变量> AUTO_INCREMENT
+<因子> <变量> AUTO_DECREMENT
+<因子> AUTO_INCREMENT <变量>
+<因子> AUTO_DECREMENT <变量>
 <因子> LEFT_PARENTHESIS <表达式> RIGHT_PARENTHESIS
 <因子> <变量>
 <因子> <调用>
@@ -68,12 +71,13 @@ PLUS MINUS MULTIPLY DIVIDE AUTO_INCREMENT AUTO_DECREMENT MODULO GREATER_THAN LES
 <数字> NUMBER_INT
 <数字> NUMBER_DOUBLE
 <变量> IDENTIFIER LEFT_BRACKET <表达式> RIGHT_BRACKET
-<调用> IDENTIFIER LEFT_PARENTHESIS <形式参数列表> RIGHT_PARENTHESIS SEMICOLON
-<调用> IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS SEMICOLON
-<形式参数表列> <形式参数表列> COMMA <表达式>
-<形式参数表列> <表达式>
+<调用> IDENTIFIER LEFT_PARENTHESIS <形式参数列表> RIGHT_PARENTHESIS
+<调用> IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS
+<形式参数列表> <形式参数列表> COMMA <表达式>
+<形式参数列表> <表达式>
 <if语句声明> IF LEFT_PARENTHESIS <表达式> RIGHT_PARENTHESIS <复合声明>
 <if语句声明> IF LEFT_PARENTHESIS <表达式> RIGHT_PARENTHESIS <复合声明> ELSE <复合声明>
+<if语句声明> IF LEFT_PARENTHESIS <表达式> RIGHT_PARENTHESIS <复合声明> ELSE <if语句声明>
 <while语句声明> WHILE LEFT_PARENTHESIS <表达式> RIGHT_PARENTHESIS <复合声明>
 <for语句声明> FOR LEFT_PARENTHESIS <变量> ASSIGN <表达式> SEMICOLON <表达式> SEMICOLON <表达式> RIGHT_PARENTHESIS <复合声明>
 <break语句声明> BREAK SEMICOLON

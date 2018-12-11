@@ -59,11 +59,11 @@ public class Main extends Application {
         tokens_.add(token5);
         tokens_.add(token6);
         tokens_.add(token7);测试*/
-        /*try {
+        try {
             parser.readTokens(tokens);
         } catch (SyntaxException e) {
             e.printStackTrace();
-        }*/
+        }
         System.exit(0);
     }
 
