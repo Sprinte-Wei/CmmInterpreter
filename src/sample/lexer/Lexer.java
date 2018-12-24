@@ -18,6 +18,8 @@ public class Lexer {
     private StringBuilder stringBuilder;
     private int multipleNotationStartLine = 0;
     private int multipleNotationsStart = 0;
+    public boolean isError = false;
+    public StringBuilder errorCode = new StringBuilder();
 
 
     private List<String> lines;
@@ -44,7 +46,8 @@ public class Lexer {
                 }*/
             }
             catch (LexicalException e){
-                System.out.println(e.getMessage());
+                isError = true;
+                errorCode.append(e.getMessage()+"\n");
             }
         }
         return tokens;
@@ -428,12 +431,11 @@ public class Lexer {
         return (str.equals("if") || str.equals("else")
                 || str.equals("read") || str.equals("write")
                 || str.equals("while") || str.equals("for")
-                || str.equals("switch") || str.equals("case")
-                || str.equals("default") || str.equals("int")
+                || str.equals("int")
                 || str.equals("double") || str.equals("char")
                 || str.equals("bool") || str.equals("void")
                 || str.equals("false") || str.equals("true")
-                || str.equals("string")|| str.equals("return"));
+                || str.equals("string") || str.equals("return"));
     }
 
     /**

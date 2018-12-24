@@ -1,5 +1,6 @@
 package sample.parser;
 
+import sample.Controller;
 import sample.Main;
 import sample.lexer.Token;
 import sample.lexer.TokenType;
@@ -178,7 +179,7 @@ public class Parser {
     private void getLinesFromResource()//获取文法信息
     {
         StringBuilder s = new StringBuilder();
-        File file = new File(Main.class.getResource("/Grammar.txt").getPath());
+        File file = new File(getClass().getResource("/Grammar.txt").getPath());
         BufferedReader reader = null;
         try {
             FileInputStream in = new FileInputStream(file);
@@ -305,6 +306,7 @@ public class Parser {
             {
                 TreeNode treeNode = new TreeNode(-1,"START");
                 tree.add(treeNode);
+                createTree();
                 return;
             }
             else if(nextState.isR())//规约状态
@@ -338,6 +340,7 @@ public class Parser {
                 Vn = -1;
             }
         }
+
     }
 
     public void printTree()
@@ -346,6 +349,16 @@ public class Parser {
         {
             System.out.print(tree.get(i).parent);
             System.out.println(tree.get(i).content);
+        }
+    }
+
+    private void createTree(){
+        for(int i = 0; i < tree.size(); i++){
+            for(int j = 0; j < tree.size(); j++){
+                if(tree.get(j).parent == i){
+                    tree.get(i).children.add(j);
+                }
+            }
         }
     }
 }
