@@ -221,7 +221,7 @@ public class Parser {
 
     private void printAll()
     {
-        /*for(int i = 0; i < sTable.size(); i++)
+        for(int i = 0; i < sTable.size(); i++)
         {
             ArrayList<State> s = sTable.get(i);
             System.out.print(i);
@@ -232,7 +232,7 @@ public class Parser {
                 System.out.print(" ");
             }
             System.out.println();
-        }*/
+        }
         for(int i = 0; i < sTable.size(); i++)
         {
             ArrayList<State> s = sTable.get(i);
@@ -259,6 +259,16 @@ public class Parser {
         for(int i = 0; i < tokens.size(); i++)
         {
             Token t = tokens.get(i);
+            if(t.getType() == TokenType.MINUS)
+            {
+                if(i!=0)
+                {
+                    if(tokens.get(i-1).getType()!=TokenType.IDENTIFIER && tokens.get(i-1).getType() != TokenType.NUMBER_DOUBLE && tokens.get(i-1).getType() != TokenType.NUMBER_INT)
+                    {
+                        tokenQueue.offer(new Token(TokenType.NUMBER_INT,"0",t.getLine(), t.getLocation()));//负号前面补零
+                    }
+                }
+            }
             tokenQueue.offer(t);
         }
         tokenQueue.offer(new Token(TokenType.END,"", tokens.size(),(tokens.get(tokens.size()-1)).getLocation() + (tokens.get(tokens.size()-1).getValue()).length()));//补上句子结尾

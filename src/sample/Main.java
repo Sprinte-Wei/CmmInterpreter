@@ -40,7 +40,6 @@ public class Main extends Application {
                 tokens.remove(token);
                 i--;
             }
-
             //System.out.println(token);
         }
         Parser parser = new Parser();

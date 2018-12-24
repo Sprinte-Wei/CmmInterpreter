@@ -433,7 +433,7 @@ public class Lexer {
                 || str.equals("double") || str.equals("char")
                 || str.equals("bool") || str.equals("void")
                 || str.equals("false") || str.equals("true")
-                || str.equals("string"));
+                || str.equals("string")|| str.equals("return"));
     }
 
     /**
