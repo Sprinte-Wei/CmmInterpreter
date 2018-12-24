@@ -222,7 +222,7 @@ public class Parser {
 
     private void printAll()
     {
-        /*for(int i = 0; i < sTable.size(); i++)
+        for(int i = 0; i < sTable.size(); i++)
         {
             ArrayList<State> s = sTable.get(i);
             System.out.print(i);
@@ -233,7 +233,7 @@ public class Parser {
                 System.out.print(" ");
             }
             System.out.println();
-        }*/
+        }
         for(int i = 0; i < sTable.size(); i++)
         {
             ArrayList<State> s = sTable.get(i);
